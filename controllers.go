@@ -1,6 +1,11 @@
 package main
 
-type ControllerInterface interface {
+import (
+	"fmt"
+	"net/http"
+)
+
+type EndpointInterface interface {
 	Create()
 	Update()
 	Delete()
@@ -8,30 +13,34 @@ type ControllerInterface interface {
 	FindOne()
 }
 
-type UserController struct{}
+type UserEndpoint struct{}
 
-func (uc UserController) Create(UserDTORequest) error {
-	return nil
+func (e UserEndpoint) Create(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "createUser")
 }
 
-func (uc UserController) Update(UserDTORequest) error {
-	return nil
-
+func (e UserEndpoint) Update(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "updateUser")
 }
 
-func (uc UserController) Delete(UserDTORequest) error {
-	return nil
+func (e UserEndpoint) Delete(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Delete User Endpoint")
 }
 
-func (uc UserController) Find(UserDTORequest) ([]UserDTOResponse, error) {
-	return nil, nil
+func (e UserEndpoint) Find(w http.ResponseWriter, r *http.Request) {
+	us := UserService{}
+	u, err := us.Find(UserDTORequest{})
+	if err != nil {
+		fmt.Fprint(w, err)
+	}
+	fmt.Fprint(w, u)
 }
 
-func (uc UserController) FindOne(UserDTORequest) (UserDTOResponse, error) {
-	return UserDTOResponse{
-		Id:       "1",
-		Name:     "John",
-		Email:    "john@mail.com",
-		Password: "123456",
-	}, nil
+func (e UserEndpoint) FindOne(w http.ResponseWriter, r *http.Request) {
+	uc := UserService{}
+	u, err := uc.FindOne(UserDTORequest{})
+	if err != nil {
+		fmt.Fprint(w, "error")
+	}
+	fmt.Fprint(w, u.Name)
 }

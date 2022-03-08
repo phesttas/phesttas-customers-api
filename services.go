@@ -11,22 +11,24 @@ type ServiceInterface interface {
 type UserService struct {
 }
 
-func (us UserService) Create() {
+func (us UserService) Create(UserDTORequest) error {
+	return nil
+}
+
+func (us UserService) Update(UserDTORequest) error {
+	return nil
 
 }
 
-func (us UserService) Update() {
+func (us UserService) Delete(UserDTORequest) error {
+	return nil
 
 }
 
-func (us UserService) Delete() {
-
+func (us UserService) Find(UserDTORequest) ([]UserDTOResponse, error) {
+	return []UserDTOResponse{}, nil
 }
 
-func (us UserService) Find() {
-
-}
-
-func (us UserService) FindOne() {
-
+func (us UserService) FindOne(UserDTORequest) (UserDTOResponse, error) {
+	return UserDTOResponse{}, nil
 }
