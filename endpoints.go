@@ -22,12 +22,25 @@ func (e UserEndpoint) Create(w http.ResponseWriter, r *http.Request) {
 func (e UserEndpoint) Update(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "updateUser")
 }
+
 func (e UserEndpoint) Delete(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "deleteUser")
+	fmt.Fprint(w, "Delete User Endpoint")
 }
+
 func (e UserEndpoint) Find(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "findUsers")
+	uc := UserController{}
+	u, err := uc.Find(UserDTORequest{})
+	if err != nil {
+		fmt.Fprint(w, err)
+	}
+	fmt.Fprint(w, u)
 }
+
 func (e UserEndpoint) FindOne(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "findUser")
+	uc := UserController{}
+	u, err := uc.FindOne(UserDTORequest{})
+	if err != nil {
+		fmt.Fprint(w, "error")
+	}
+	fmt.Fprint(w, u.Name)
 }
