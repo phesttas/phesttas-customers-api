@@ -1,26 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { Customer, Prisma } from '@prisma/client'
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class CustomerService {
-  create(createCustomerDto: CreateCustomerDto) {
-    return 'This action adds a new customer';
+
+  constructor(private prisma: PrismaService) { }
+
+  create(data: Prisma.CustomerCreateInput): Promise<Customer> {
+    return this.prisma.customer.create({
+      data: data,
+    });
   }
 
-  findAll() {
-    return `This action returns all customer`;
+  findAll(params: {
+    skip?: number,
+    take?: number,
+    cursor?: Prisma.CustomerWhereUniqueInput,
+    where?: Prisma.CustomerWhereInput,
+    orderBy?: Prisma.CustomerOrderByWithRelationInput,
+  }): Promise<Customer[]> {
+    return this.prisma.customer.findMany({
+      ...params,
+    });
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} customer`;
+  findOne(customerWhereUniqueInput: Prisma.CustomerWhereUniqueInput): Promise<Customer | null> {
+    return this.prisma.customer.findUnique({
+      where: customerWhereUniqueInput,
+    });
+
   }
 
-  update(id: number, updateCustomerDto: UpdateCustomerDto) {
-    return `This action updates a #${id} customer`;
+  update(params: {
+    where: Prisma.CustomerWhereUniqueInput,
+    data: Prisma.CustomerUpdateInput,
+  }): Promise<Customer> {
+    const { where, data } = params;
+    return this.prisma.customer.update({
+      data,
+      where,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} customer`;
+  remove(where: Prisma.CustomerWhereUniqueInput): Promise<Customer> {
+    return this.prisma.customer.delete({
+      where,
+    });
   }
 }
